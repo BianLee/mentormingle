@@ -32,4 +32,5 @@ model mentors {
   role            String?
   bio             String?
   grad_year       Int?
+  email           String?
 }
