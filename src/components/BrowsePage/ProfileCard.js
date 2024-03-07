@@ -9,7 +9,7 @@ const people = [
   {
     name: "Bian Lee",
     title: "Paradigm Representative",
-    role: "Admin",
+    curr_role: "Admin",
     email: "janecooper@example.com",
     telephone: "+1-202-555-0170",
     imageUrl:
@@ -18,7 +18,7 @@ const people = [
   {
     name: "Jane Cooper",
     title: "Paradigm Representative",
-    role: "Admin",
+    curr_role: "Admin",
     email: "janecooper@example.com",
     telephone: "+1-202-555-0170",
     imageUrl:
@@ -67,7 +67,7 @@ export default function ProfileCard() {
     (person) =>
       (person.name.toLowerCase().includes(searchTerm) ||
         person.bio.toLowerCase().includes(searchTerm) ||
-        person.role.toLowerCase().includes(searchTerm) ||
+        person.curr_role.toLowerCase().includes(searchTerm) ||
         person.current_company.toLowerCase().includes(searchTerm)) &&
       (selectedMajor.name === "All Majors" ||
         person.major.toLowerCase() === selectedMajor.name.toLowerCase())
@@ -82,7 +82,7 @@ export default function ProfileCard() {
   return (
     <>
       <ul
-        role="list"
+        curr_role="list"
         className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 px-5"
       >
         {currentSelection == "Mentors" ? (
@@ -104,7 +104,7 @@ export default function ProfileCard() {
                   </h3>
                   <dl className="flex flex-grow flex-col justify-between">
                     <dd className="text-md text-gray-500">
-                      {person.role} @ {person.current_company}
+                      {person.curr_role} @ {person.current_company}
                     </dd>
                     <p className="line-clamp text-left text-sm">{person.bio}</p>
                     <dd className="mt-3">
@@ -138,7 +138,7 @@ export default function ProfileCard() {
                   </h3>
                   <dl className="flex flex-grow flex-col justify-between">
                     <dd className="text-md text-gray-500">
-                      {person.role} @ {person.current_company}
+                      {person.curr_role} @ {person.current_company}
                     </dd>
                     <p className="line-clamp text-left text-sm">{person.bio}</p>
                     <dd className="mt-3">

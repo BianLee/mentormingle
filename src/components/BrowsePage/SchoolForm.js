@@ -89,7 +89,7 @@ export default function SchoolForm() {
                       <>
                         <span
                           className={classNames(
-                            selected ? "font-semibold" : "font-normal",
+                            selected ? "" : "font-normal",
                             "block truncate"
                           )}
                         >

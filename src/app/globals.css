@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Satoshi-Medium";
+  src: url("../../fonts/Satoshi-Medium.woff");
+}
+
 .line-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+* {
+  font-family: "Satoshi-Medium";
 }

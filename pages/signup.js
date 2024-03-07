@@ -27,6 +27,12 @@ export default function Example() {
     const { user, error: signUpError } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          email: email,
+          roleStatus: roleStatus,
+        },
+      },
     });
 
     if (error) {
@@ -38,24 +44,6 @@ export default function Example() {
       console.log(
         "Signup successful, check your email for the verification link."
       );
-
-      // Insert a row into the appropriate table with the user ID
-      // Assuming you have a column in your table to store the user ID, adjust 'user_id' as necessary
-      const { data, error: insertError } = await supabase
-        .from("profiles")
-        .insert([{ email: email }])
-        .single();
-
-      if (insertError) {
-        console.error(
-          "Error inserting user into role table",
-          insertError.message
-        );
-        // Optionally handle this error, such as showing a message to the user
-      } else {
-        console.log("User role assigned successfully.");
-        // Optionally, perform any additional logic after successfully assigning the role
-      }
     }
     setLoading(false);
   };
@@ -67,7 +55,7 @@ export default function Example() {
         style={{ backgroundImage: "url('/cta1.webp')" }}
       >
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+          <h2 className="mt-6 text-center text-2xl leading-9 tracking-tight text-white">
             Sign up for an account
           </h2>
         </div>
@@ -117,7 +105,7 @@ export default function Example() {
                 </div>
               </div>
               <div>
-                <label className="text-base font-semibold text-gray-900"></label>
+                <label className="text-base  text-gray-900"></label>
                 <p className="text-sm text-gray-500">
                   What best describes your role?
                 </p>
@@ -150,7 +138,7 @@ export default function Example() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm  leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Sign Up
                 </button>
@@ -159,7 +147,7 @@ export default function Example() {
                 Already have an account?{" "}
                 <span
                   onClick={routeToLogin}
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  className=" text-indigo-600 hover:text-indigo-500"
                 >
                   Sign In
                 </span>

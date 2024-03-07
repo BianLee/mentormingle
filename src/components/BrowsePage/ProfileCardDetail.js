@@ -43,7 +43,7 @@ const ProfileCardDetail = ({ id }) => {
     <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">
       <div className="overflow-hidden bg-white sm:rounded-lg mt-5">
         <div className="px-4 py-6 sm:px-6">
-          <h3 className="text-base font-semibold leading-7 text-gray-900">
+          <h3 className="text-base  leading-7 text-gray-900">
             {detail && <h1 className="text-lg">{detail.name}</h1>}
           </h3>
           {/*
@@ -81,7 +81,7 @@ const ProfileCardDetail = ({ id }) => {
                 Current Title
               </dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {detail && <div>{detail.role}</div>}
+                {detail && <div>{detail.curr_role}</div>}
               </dd>
             </div>
             <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

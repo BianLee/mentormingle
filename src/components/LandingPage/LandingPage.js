@@ -80,7 +80,7 @@ export default function Example() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold leading-6 text-white"
+                className="text-sm  leading-6 text-white"
               >
                 {item.name}
               </a>
@@ -90,7 +90,7 @@ export default function Example() {
             {!isAuthenticated && (
               <a
                 onClick={navigateToLogin}
-                className="text-sm font-semibold leading-6 text-white cursor-pointer"
+                className="text-sm  leading-6 text-white cursor-pointer"
               >
                 Log In
               </a>
@@ -98,7 +98,7 @@ export default function Example() {
             {isAuthenticated && (
               <a
                 onClick={signOutUser}
-                className="text-sm font-semibold leading-6 text-white cursor-pointer"
+                className="text-sm leading-6 text-white cursor-pointer"
               >
                 Log Out
               </a>
@@ -151,7 +151,7 @@ export default function Example() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
                     </a>
@@ -161,7 +161,7 @@ export default function Example() {
                   {!isAuthenticated && (
                     <a
                       onClick={navigateToLogin}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
                     >
                       Log In
                     </a>
@@ -169,7 +169,7 @@ export default function Example() {
                   {isAuthenticated && (
                     <a
                       onClick={signOutUser}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
                     >
                       Log Out
                     </a>
@@ -183,10 +183,10 @@ export default function Example() {
 
       <main className="isolate">
         <div className="relative">
-          <div className="py-24 sm:py-32 bg-gray-900 bg-cover">
+          <div className="py-24 sm:py-32 bg-blue-900 bg-cover">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 ">
               <div className="mx-auto max-w-2xl text-center">
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+                <h1 className="text-8xl tracking-tight text-white sm:text-8xl">
                   MentorMingle
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-white">
@@ -195,7 +195,7 @@ export default function Example() {
                 <div className="mt-7 flex items-center justify-center gap-x-2">
                   <a
                     onClick={() => navigateToBrowse()}
-                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
                   >
                     Get paired with a mentor!{" "}
                     <span aria-hidden="true">&rarr;</span>
@@ -206,6 +206,7 @@ export default function Example() {
           </div>
         </div>
       </main>
+
       {/*
       <LandingFooter />
        */}

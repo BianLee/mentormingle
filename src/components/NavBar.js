@@ -93,7 +93,7 @@ export default function LoginPage() {
                       {isAuthenticated && (
                         <>
                           <span
-                            className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                            className="ml-4 text-sm leading-6 text-gray-900"
                             aria-hidden="true"
                           >
                             Bian Lee
@@ -106,7 +106,7 @@ export default function LoginPage() {
                       )}
                       {!isAuthenticated && (
                         <span
-                          className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                          className="ml-4 text-sm leading-6 text-gray-900"
                           aria-hidden="true"
                           onClick={routeToLogin}
                         >
