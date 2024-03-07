@@ -94,56 +94,60 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const { data: one } = await supabase
-        .from("usersviewtwo")
-        .select("*")
-        .filter("raw_user_meta_data", "cs", `{"email": "${user.email}"}`) // Adjust based on your actual metadata structure
-        .single();
+    if (user) {
+      const fetchUserData = async () => {
+        const { data: one } = await supabase
+          .from("usersviewtwo")
+          .select("*")
+          .filter("raw_user_meta_data", "cs", `{"email": "${user.email}"}`) // Adjust based on your actual metadata structure
+          .single();
 
-      if (!one) {
-        console.error("No user found in usersviewtwo");
-        return; // Exit the function if no user is found
-      }
+        if (!one) {
+          console.error("No user found in usersviewtwo");
+          return; // Exit the function if no user is found
+        }
 
-      console.log(one.raw_user_meta_data.roleStatus);
-      setStatusLocal(one.raw_user_meta_data.roleStatus);
+        console.log(one.raw_user_meta_data.roleStatus);
+        setStatusLocal(one.raw_user_meta_data.roleStatus);
 
-      // Corrected the assignment operator here
-      let tableVal =
-        one.raw_user_meta_data.roleStatus == "Mentor" ? "mentors" : "mentees";
+        // Corrected the assignment operator here
+        let tableVal =
+          one.raw_user_meta_data.roleStatus == "Mentor" ? "mentors" : "mentees";
 
-      const { data, error } = await supabase
-        .from(tableVal)
-        .select("*")
-        .eq("email", user.email)
-        .single();
+        const { data, error } = await supabase
+          .from(tableVal)
+          .select("*")
+          .eq("email", user.email)
+          .single();
 
-      if (error) {
-        console.error("Error fetching user data", error);
-      } else if (data) {
-        console.log(
-          "User found with matching email in raw_user_meta_data",
-          data
-        );
-        setProfile({
-          email: data.email,
-          name: data.name,
-          grad_year: data.grad_year,
-          pfp_url: data.pfp_url,
-          major: data.major,
-          current_company: data.current_company,
-          curr_role: data.curr_role,
-          bio: data.bio,
-        });
-      } else {
-        console.log(
-          "User not found or no matching email in raw_user_meta_data"
-        );
-      }
-    };
+        if (error) {
+          console.error("Error fetching user data", error);
+        } else if (data) {
+          console.log(
+            "User found with matching email in raw_user_meta_data",
+            data
+          );
+          setProfile({
+            email: data.email,
+            name: data.name,
+            grad_year: data.grad_year,
+            pfp_url: data.pfp_url,
+            major: data.major,
+            current_company: data.current_company,
+            curr_role: data.curr_role,
+            bio: data.bio,
+          });
+        } else {
+          console.log(
+            "User not found or no matching email in raw_user_meta_data"
+          );
+        }
+      };
 
-    fetchUserData();
+      fetchUserData();
+    } else {
+      console.log("user not found");
+    }
   }, [user]);
 
   return (

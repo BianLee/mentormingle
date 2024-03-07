@@ -92,49 +92,45 @@ const ProfileCardDetail = ({ id }) => {
   }, [user, id]); // Fetch messages when the user or profile ID changes
 
   useEffect(() => {
-    if (user) {
-      const fetchData = async () => {
-        try {
-          const { data: one, error } = await supabase
-            .from("usersviewtwo")
-            .select("*")
-            .filter("id", "eq", id)
-            .single();
+    const fetchData = async () => {
+      try {
+        const { data: one, error } = await supabase
+          .from("usersviewtwo")
+          .select("*")
+          .filter("id", "eq", id)
+          .single();
 
-          if (error) {
-            console.error("Error fetching data:", error);
-          } else {
-            console.log("Fetched data:", one);
-          }
-          let tableVal =
-            one.raw_user_meta_data.roleStatus == "Mentor"
-              ? "mentors"
-              : "mentees";
-          if (!id) return; // If no ID is provided, don't attempt to fetch data
-          try {
-            setLoading(true);
-            const { data: mentorData, error: mentorError } = await supabase
-              .from(tableVal) // Assuming 'mentors' is the correct table name
-              .select("*")
-              .eq("id", id)
-              .single(); // Assuming 'id' is a unique identifier
-            if (mentorError) {
-              throw mentorError;
-            }
-            setDetail(mentorData);
-          } catch (error) {
-            console.error("Error fetching data:", error.message);
-            setError(error.message);
-          } finally {
-            setLoading(false);
-          }
-        } catch (error) {
-          console.error("Error executing query:", error);
+        if (error) {
+          console.error("Error fetching data:", error);
+        } else {
+          console.log("Fetched data:", one);
         }
-      };
-      fetchData();
-    }
-  }, [id, user]);
+        let tableVal =
+          one.raw_user_meta_data.roleStatus == "Mentor" ? "mentors" : "mentees";
+        if (!id) return; // If no ID is provided, don't attempt to fetch data
+        try {
+          setLoading(true);
+          const { data: mentorData, error: mentorError } = await supabase
+            .from(tableVal) // Assuming 'mentors' is the correct table name
+            .select("*")
+            .eq("id", id)
+            .single(); // Assuming 'id' is a unique identifier
+          if (mentorError) {
+            throw mentorError;
+          }
+          setDetail(mentorData);
+        } catch (error) {
+          console.error("Error fetching data:", error.message);
+          setError(error.message);
+        } finally {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error executing query:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const isOwnProfile = user?.id === id;
 
