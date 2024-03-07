@@ -194,7 +194,7 @@ export default function Example() {
                 <h1 className="text-5xl tracking-tight text-white sm:text-6xl md:text-6xl lg:text-7xl">
                   MentorMingle
                 </h1>
-                <p className="mt-6 text-lg leading-6 text-white">
+                <p className="mt-6 text-lg leading-7 text-white">
                   Establishing Mentor-Mentee Relationships at UC Davis campus!
                 </p>
                 <div className="mt-7 flex items-center justify-center gap-x-2">

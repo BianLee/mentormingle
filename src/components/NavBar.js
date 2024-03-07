@@ -11,7 +11,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 
-const navigation = [{ name: "Browse", href: "#", current: true }];
+const navigation = [{ name: "Browse", href: "/browse", current: true }];
 const userNavigation = [{ name: "Your Profile" }, { name: "Sign out" }];
 
 function classNames(...classes) {
@@ -27,11 +27,13 @@ export default function LoginPage() {
 
   const signOutUser = async () => {
     const { error } = await supabase.auth.signOut();
+
     if (!error) {
       setAuth(null);
     } else {
       console.error("Sign out error:", error.message);
     }
+    router.push("/");
   };
 
   const routeToLogin = () => {
@@ -222,7 +224,13 @@ export default function LoginPage() {
                       <Disclosure.Button
                         key={item.name}
                         as="a"
-                        href={item.href}
+                        onClick={() => {
+                          if (item.name === "Your Profile") {
+                            navigateToAdd();
+                          } else if (item.name === "Sign out") {
+                            signOutUser();
+                          }
+                        }}
                         className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                       >
                         {item.name}
