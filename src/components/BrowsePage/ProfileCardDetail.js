@@ -1,18 +1,28 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import React, { useState, useEffect } from "react";
+import useMentorMenteeStore from "../../../stores/mentorMenteeStore";
 import { supabase } from "../../utils/supabaseClient";
 const ProfileCardDetail = ({ id }) => {
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const currentSelection = useMentorMenteeStore(
+    (state) => state.currentSelection
+  );
   useEffect(() => {
+    console.log(currentSelection);
+    var value = "";
+    if (currentSelection == "Mentees") {
+      value = "mentees";
+    } else if (currentSelection == "Mentors") {
+      value = "mentors";
+    }
     const fetchData = async () => {
       if (!id) return; // If no ID is provided, don't attempt to fetch data
       try {
         setLoading(true);
         const { data: mentorData, error: mentorError } = await supabase
-          .from("mentors") // Assuming 'mentors' is the correct table name
+          .from(value) // Assuming 'mentors' is the correct table name
           .select("*")
           .eq("id", id)
           .single(); // Assuming 'id' is a unique identifier

@@ -43,6 +43,12 @@ export default function Example() {
       console.log("Login successful");
       router.push("/"); // Redirect to home after successful login
     }
+    const subscription = supabase
+      .from(`messages:conversation_id=eq.${conversationId}`)
+      .on("INSERT", (payload) => {
+        console.log("New message:", payload.new);
+      })
+      .subscribe();
 
     setLoading(false);
   };

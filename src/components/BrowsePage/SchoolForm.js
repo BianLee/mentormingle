@@ -1,8 +1,11 @@
 import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import useMentorMenteeStore from "../../../stores/mentorMenteeStore";
 import { supabase } from "../../utils/supabaseClient";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import useSelectedMajorStore from "../../../stores/selectedMajorStore";
+import { Allan } from "next/font/google";
+import SearchBar from "./SearchBar";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -10,20 +13,29 @@ function classNames(...classes) {
 
 export default function SchoolForm() {
   const { selectedMajor, setSelectedMajor } = useSelectedMajorStore();
+
   const [majors, setMajors] = useState([{ id: 0, name: "All Majors" }]); // Default value
   const [selected, setSelected] = useState(
     selectedMajor || { id: 0, name: "All Majors" }
   );
-
+  const currentSelection = useMentorMenteeStore(
+    (state) => state.currentSelection
+  );
   useEffect(() => {
+    console.log(currentSelection);
     const fetchMajors = async () => {
-      let { data, error } = await supabase.from("mentors").select("major");
+      var value = "";
+      if (currentSelection == "Mentees") {
+        value = "mentees";
+      } else {
+        value = "mentors";
+      }
+      let { data, error } = await supabase.from(value).select("major");
 
       if (error) {
         console.error("Error fetching majors:", error);
         return;
       }
-
       // Use reduce to create a distinct list of majors
       const distinctMajors = data.reduce((acc, { major }) => {
         const exists = acc.some((item) => item.name === major);
@@ -37,7 +49,7 @@ export default function SchoolForm() {
     };
 
     fetchMajors();
-  }, []);
+  }, [currentSelection]);
 
   useEffect(() => {
     setSelected(selectedMajor);

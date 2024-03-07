@@ -73,8 +73,14 @@ export default function ProfileCard() {
         person.major.toLowerCase() === selectedMajor.name.toLowerCase())
   );
 
-  const filetredMenteePeople = menteePeople.filter((person) =>
-    person.name.toLowerCase().includes(searchTerm)
+  const filetredMenteePeople = menteePeople.filter(
+    (person) =>
+      (person.name.toLowerCase().includes(searchTerm) ||
+        person.bio.toLowerCase().includes(searchTerm) ||
+        person.curr_role.toLowerCase().includes(searchTerm) ||
+        person.current_company.toLowerCase().includes(searchTerm)) &&
+      (selectedMajor.name === "All Majors" ||
+        person.major.toLowerCase() === selectedMajor.name.toLowerCase())
   );
 
   console.log(people);
@@ -125,6 +131,7 @@ export default function ProfileCard() {
             {filetredMenteePeople.map((person) => (
               <li
                 key={person.id}
+                onClick={() => navigateToProfile(person)}
                 className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center  cursor-pointer border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
               >
                 <div className="flex flex-1 flex-col p-8">
