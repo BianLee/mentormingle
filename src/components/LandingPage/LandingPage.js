@@ -195,7 +195,7 @@ export default function Example() {
                   MentorMingle
                 </h1>
                 <p className="mt-6 text-lg leading-6 text-white">
-                  Establishing Mentor-Mentee Relationships at UC Davis!
+                  Establishing Mentor-Mentee Relationships at UC Davis campus!
                 </p>
                 <div className="mt-7 flex items-center justify-center gap-x-2">
                   <a
@@ -205,12 +205,22 @@ export default function Example() {
                     Get paired with a mentor!{" "}
                     <span aria-hidden="true">&rarr;</span>
                   </a>
-                  <a
-                    onClick={() => navigateToBrowse()}
-                    className="rounded-md bg-gray-50 px-3.5 py-2.5 text-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
-                  >
-                    Log In
-                  </a>
+                  {!isAuthenticated && (
+                    <a
+                      onClick={navigateToLogin}
+                      className="rounded-md bg-gray-50 px-3.5 py-2.5 text-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+                    >
+                      Log In
+                    </a>
+                  )}
+                  {isAuthenticated && (
+                    <a
+                      onClick={signOutUser}
+                      className="rounded-md bg-gray-50 px-3.5 py-2.5 text-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+                    >
+                      Log Out
+                    </a>
+                  )}
                 </div>
               </div>{" "}
             </div>
