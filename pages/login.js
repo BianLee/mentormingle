@@ -43,6 +43,7 @@ export default function Example() {
       console.log("Login successful");
       router.push("/"); // Redirect to home after successful login
     }
+    /* 
     const subscription = supabase
       .from(`messages:conversation_id=eq.${conversationId}`)
       .on("INSERT", (payload) => {
@@ -51,6 +52,7 @@ export default function Example() {
       .subscribe();
 
     setLoading(false);
+    */
   };
   const handleSignUp = async (e) => {
     e.preventDefault();

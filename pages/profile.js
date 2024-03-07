@@ -4,6 +4,7 @@ import "../src/app/globals.css";
 import { useRouter } from "next/router";
 import useAuthStore from "../stores/authStore";
 import useInitializeAuth from "../src/hooks/authHook";
+import useMentorMenteeStore from "../stores/mentorMenteeStore";
 
 export default function Profile() {
   useInitializeAuth();
@@ -20,10 +21,18 @@ export default function Profile() {
   const user = useAuthStore((state) => state.user);
   const [isUploading, setIsUploading] = useState(false);
   const [userRoleStatus, setUserRoleStatus] = useState("");
+  const [statusLocal, setStatusLocal] = useState("");
+
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { error: updateError } = await supabase.from("mentees").upsert(
+    let table;
+    if (statusLocal == "Mentor") {
+      table = "mentors";
+    } else {
+      table = "mentees";
+    }
+    const { error: updateError } = await supabase.from(table).upsert(
       {
         email: user.email,
         name: profile.name,
@@ -38,6 +47,7 @@ export default function Profile() {
         onConflict: "email",
       }
     );
+
     router.push("/browse");
   };
 
@@ -86,18 +96,35 @@ export default function Profile() {
   useEffect(() => {
     if (user) {
       const fetchUserData = async () => {
+        const { data: one } = await supabase
+          .from("usersviewtwo")
+          .select("*")
+          .filter("raw_user_meta_data", "cs", `{"email": "${user.email}"}`) // Adjust based on your actual metadata structure
+          .single();
+
+        if (!one) {
+          console.error("No user found in usersviewtwo");
+          return; // Exit the function if no user is found
+        }
+
+        console.log(one.raw_user_meta_data.roleStatus);
+        setStatusLocal(one.raw_user_meta_data.roleStatus);
+
+        // Corrected the assignment operator here
+        let tableVal =
+          one.raw_user_meta_data.roleStatus == "Mentor" ? "mentors" : "mentees";
+
         const { data, error } = await supabase
-          .from("mentees")
+          .from(tableVal)
           .select("*")
           .eq("email", user.email)
           .single();
-        // console.log(data.raw_user_meta_data.roleStatus);
+
         if (error) {
           console.error("Error fetching user data", error);
         } else if (data) {
-          // If the email is found, proceed with your logic
           console.log(
-            "User found in auth.users with matching email in raw_user_meta_data",
+            "User found with matching email in raw_user_meta_data",
             data
           );
           setProfile({
@@ -110,13 +137,13 @@ export default function Profile() {
             curr_role: data.curr_role,
             bio: data.bio,
           });
-          // setUserRoleStatus(data.raw_user_meta_data.roleStatus);
         } else {
           console.log(
-            "User not found in auth.users or no matching email in raw_user_meta_data"
+            "User not found or no matching email in raw_user_meta_data"
           );
         }
       };
+
       fetchUserData();
     } else {
       console.log("user not found");

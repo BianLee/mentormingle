@@ -2,13 +2,96 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 import React, { useState, useEffect } from "react";
 import useMentorMenteeStore from "../../../stores/mentorMenteeStore";
 import { supabase } from "../../utils/supabaseClient";
+import useAuthStore from "../../../stores/authStore";
+import useInitializeAuth from "../../../src/hooks/authHook";
+
 const ProfileCardDetail = ({ id }) => {
+  useInitializeAuth();
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
+
   const currentSelection = useMentorMenteeStore(
     (state) => state.currentSelection
   );
+  const { isAuthenticated, setAuth } = useAuthStore((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    setAuth: state.setAuth,
+  }));
+  const user = useAuthStore((state) => state.user);
+
+  const handleInserts = (payload) => {
+    console.log("New message received!", payload);
+    setMessages((prevMessages) => [...prevMessages, payload.new]);
+  };
+
+  // Setup real-time subscription inside a useEffect to avoid multiple subscriptions
+  useEffect(() => {
+    const subscription = supabase
+      .channel("realtime:public:messages")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        handleInserts
+      )
+      .subscribe();
+  }, []);
+
+  console.log(isAuthenticated);
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    if (!message.trim()) return; // Prevent sending an empty message
+
+    const senderId = user.id;
+    const recipientId = id; // Assuming 'id' is the mentor's ID
+
+    console.log("senderId: " + senderId);
+    console.log("recipientId: " + recipientId);
+
+    try {
+      const { data, error } = await supabase.from("messages").insert([
+        {
+          sender_id: senderId,
+          recipient_id: recipientId,
+          message_text: message,
+        },
+      ]);
+
+      if (error) throw error;
+
+      // Optionally reset the message input and show a success message
+      setMessage("");
+      // alert("Message sent successfully!");
+    } catch (error) {
+      console.error("Error sending message:", error.message);
+    }
+  };
+
+  async function fetchMessages() {
+    if (!user || !id) return; // Ensure user and id are available
+
+    try {
+      // Update the query to fetch messages where the current user is either the sender or recipient, and the profile ID matches the other party
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        // Filter for messages between the current user and the profile ID
+        .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
+        .or(`sender_id.eq.${id},recipient_id.eq.${id}`);
+
+      if (error) throw error;
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching messages:", error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchMessages();
+  }, [user, id]); // Fetch messages when the user or profile ID changes
+
   useEffect(() => {
     console.log(currentSelection);
     var value = "";
@@ -102,6 +185,33 @@ const ProfileCardDetail = ({ id }) => {
             </div>
           </dl>
         </div>
+      </div>
+      <div className="mt-4 px-4 py-6 sm:px-6 bg-gray-100 rounded-lg">
+        <h2 className="text-lg font-semibold mb-4">Messages</h2>
+        <div className="max-h-96 overflow-y-auto">
+          {messages.map((message, index) => (
+            <div key={index} className="bg-white p-4 rounded-lg shadow mb-2">
+              <p className="text-gray-800">{message.message_text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 px-4 py-6 sm:px-6">
+        <form onSubmit={sendMessage} className="flex flex-col gap-4">
+          <textarea
+            className="p-2 w-full h-24 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Write a message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          ></textarea>
+          <button
+            type="submit"
+            className="self-end px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow"
+          >
+            Send Message
+          </button>
+        </form>
       </div>
     </div>
   );
