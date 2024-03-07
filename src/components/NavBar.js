@@ -170,7 +170,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <Disclosure.Panel>
+          <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 pb-3 pt-2">
               {navigation.map((item) => (
                 <Disclosure.Button
