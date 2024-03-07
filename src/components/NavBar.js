@@ -22,6 +22,7 @@ function classNames(...classes) {
 }
 export default function LoginPage() {
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
   const { isAuthenticated, setAuth } = useAuthStore((state) => ({
     isAuthenticated: state.isAuthenticated,
     setAuth: state.setAuth,
@@ -96,7 +97,7 @@ export default function LoginPage() {
                             className="ml-4 text-sm leading-6 text-gray-900"
                             aria-hidden="true"
                           >
-                            Bian Lee
+                            {user.email}
                           </span>
                           <ChevronDownIcon
                             className="ml-2 h-5 w-5 text-gray-400"

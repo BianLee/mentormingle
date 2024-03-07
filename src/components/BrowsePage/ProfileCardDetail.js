@@ -123,6 +123,8 @@ const ProfileCardDetail = ({ id }) => {
     fetchData();
   }, [id]);
 
+  const isOwnProfile = user?.id === id;
+
   if (loading)
     return (
       <>
@@ -186,33 +188,57 @@ const ProfileCardDetail = ({ id }) => {
           </dl>
         </div>
       </div>
-      <div className="mt-4 px-4 py-6 sm:px-6 bg-gray-100 rounded-lg">
-        <h2 className="text-lg font-semibold mb-4">Messages</h2>
-        <div className="max-h-96 overflow-y-auto">
-          {messages.map((message, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow mb-2">
-              <p className="text-gray-800">{message.message_text}</p>
+      {!isOwnProfile && user && user.id && (
+        <>
+          <div className="mt-4">Chatroom with {detail.name}</div>
+          <div className="mt-4 px-4 py-3 sm:px-6 border-2 rounded-lg">
+            {/* <h2 className="text-lg mb-4">Messages</h2> */}
+            <div className="max-h-full overflow-y-auto">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg  mb-2 ${
+                    message.sender_id === user.id
+                      ? "bg-blue-100 ml-auto"
+                      : "bg-gray-100 mr-auto"
+                  }`}
+                  style={{
+                    maxWidth: "60%",
+                    marginLeft: message.sender_id === user.id ? "auto" : "0",
+                    marginRight: message.sender_id === user.id ? "0" : "auto",
+                    textAlign: message.sender_id === user.id ? "right" : "left",
+                  }}
+                >
+                  <p className="text-gray-800">{message.message_text}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-4 px-4 py-6 sm:px-6">
-        <form onSubmit={sendMessage} className="flex flex-col gap-4">
-          <textarea
-            className="p-2 w-full h-24 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Write a message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          ></textarea>
-          <button
-            type="submit"
-            className="self-end px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow"
-          >
-            Send Message
-          </button>
-        </form>
-      </div>
+          </div>
+          <div className="px-4 py-6 sm:px-6">
+            <form onSubmit={sendMessage} className="flex flex-col gap-4">
+              <textarea
+                className="p-3 w-full h-24 border border-gray-300 rounded-md focus:outline-none"
+                placeholder="Write a message..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  // Check for the Enter key without the Shift key
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault(); // Prevent the default behavior (new line)
+                    sendMessage(e); // Submit the form
+                  }
+                }}
+              ></textarea>
+              <button
+                type="submit"
+                className="self-end px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+        </>
+      )}
     </div>
   );
 };
