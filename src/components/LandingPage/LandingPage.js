@@ -191,10 +191,10 @@ export default function Example() {
           <div className="py-24 sm:py-32 bg-gray-900 bg-cover">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 ">
               <div className="mx-auto max-w-2xl text-center">
-                <h1 className="text-4xl tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                <h1 className="text-5xl tracking-tight text-white sm:text-6xl md:text-6xl lg:text-7xl">
                   MentorMingle
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-white">
+                <p className="mt-6 text-lg leading-6 text-white">
                   Establishing Mentor-Mentee Relationships at UC Davis!
                 </p>
                 <div className="mt-7 flex items-center justify-center gap-x-2">
