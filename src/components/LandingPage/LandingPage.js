@@ -6,9 +6,13 @@ import { supabase } from "../../../src/utils/supabaseClient";
 import {} from "@heroicons/react/24/outline";
 
 const navigation = [
+  {
+    /* 
   { name: "About", href: "/about" },
   { name: "Team", href: "#" },
   { name: "Contact", href: "#" },
+  */
+  },
 ];
 
 export default function Example() {
@@ -39,6 +43,7 @@ export default function Example() {
   return (
     <div className="">
       {/* Header */}
+      {/* 
       <header className="bg-gray-900">
         <nav
           className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
@@ -48,7 +53,6 @@ export default function Example() {
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">MentorMingle</span>
               <p className="text-white">MentorMingle</p>
-              {/* <img className="h-8 w-auto rounded-lg" src="/logo.jpg" alt="" /> */}
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -180,10 +184,11 @@ export default function Example() {
           </div>
         </dialog>
       </header>
+      */}
 
       <main className="isolate">
         <div className="relative">
-          <div className="py-24 sm:py-32 bg-blue-900 bg-cover">
+          <div className="py-24 sm:py-32 bg-gray-900 bg-cover">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 ">
               <div className="mx-auto max-w-2xl text-center">
                 <h1 className="text-4xl tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
@@ -199,6 +204,12 @@ export default function Example() {
                   >
                     Get paired with a mentor!{" "}
                     <span aria-hidden="true">&rarr;</span>
+                  </a>
+                  <a
+                    onClick={() => navigateToBrowse()}
+                    className="rounded-md bg-gray-50 px-3.5 py-2.5 text-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+                  >
+                    Log In
                   </a>
                 </div>
               </div>{" "}
