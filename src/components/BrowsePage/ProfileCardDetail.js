@@ -40,7 +40,7 @@ const ProfileCardDetail = ({ id }) => {
 
   console.log(isAuthenticated);
   const sendMessage = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (!message.trim()) return; // Prevent sending an empty message
 
     const senderId = user.id;
