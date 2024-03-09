@@ -22,8 +22,25 @@ export default function Profile() {
   const [isUploading, setIsUploading] = useState(false);
   const [userRoleStatus, setUserRoleStatus] = useState("");
   const [statusLocal, setStatusLocal] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const router = useRouter();
+
+  const checkFormValidity = () => {
+    const isValid =
+      profile.name.trim() !== "" &&
+      profile.grad_year.toString().trim() !== "" &&
+      profile.major.trim() !== "" &&
+      profile.current_company.trim() !== "" &&
+      profile.curr_role.trim() !== "" &&
+      profile.bio.trim() !== "";
+    setIsFormValid(isValid);
+  };
+
+  useEffect(() => {
+    checkFormValidity();
+  }, [profile]); // Dependency on profile state to re-check whenever it changes
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let table;
@@ -50,15 +67,13 @@ export default function Profile() {
 
     router.push("/browse");
   };
-
   const handleChange = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
     const { name, value } = e.target;
     setProfile((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    checkFormValidity(); // Call this function to update form validity
   };
 
   const handleFileChange = async (e) => {
@@ -91,6 +106,7 @@ export default function Profile() {
       ...prevState,
       pfp_url: data.data.publicUrl,
     }));
+    checkFormValidity();
   };
 
   useEffect(() => {
@@ -155,6 +171,8 @@ export default function Profile() {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Conditionally display the error message if form fields are incomplete */}
+
       <div className="mx-auto sm:w-11/12 md:w-3/4 lg:w-6/12 w-11/12 mt-10">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base leading-7 text-gray-900">Profile</h2>
@@ -298,9 +316,17 @@ export default function Profile() {
                 className="mt-1 block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
               />
             </div>
+            <div className="sm:col-span-4">
+              {!isFormValid && (
+                <div style={{ color: "red" }}>
+                  Please fill in all required fields.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
       <div className="mt-6 flex justify-center justify-end gap-x-6">
         <button
           type="button"
@@ -311,7 +337,7 @@ export default function Profile() {
         </button>
         <button
           type="submit"
-          disabled={isUploading}
+          disabled={isUploading || !isFormValid} // Disable if uploading or form is invalid
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Save

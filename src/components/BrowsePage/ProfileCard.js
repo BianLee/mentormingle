@@ -143,7 +143,7 @@ export default function ProfileCard() {
                 <div className="flex flex-1 flex-col p-8">
                   <img
                     className="mx-auto h-24 w-24 flex-shrink-0 rounded-full"
-                    src={person.pfp_url}
+                    src={person.pfp_url || "default.jpeg"} // Use default image if pfp_url is not available
                     alt=""
                   />
                   <h3 className="mt-3 text-lg font-medium text-gray-900">
