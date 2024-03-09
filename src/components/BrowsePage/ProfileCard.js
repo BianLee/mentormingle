@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import useSearchStore from "../../../stores/searchStore";
 import useSelectedMajorStore from "../../../stores/selectedMajorStore";
+import useSelectedYearStore from "../../../stores/selectedYearStore";
 import useMentorMenteeStore from "../../../stores/mentorMenteeStore";
 const people = [
   {
@@ -32,6 +33,7 @@ export default function ProfileCard() {
   const router = useRouter();
   const searchTerm = useSearchStore((state) => state.searchTerm);
   const selectedMajor = useSelectedMajorStore((state) => state.selectedMajor);
+  const selectedYear = useSelectedYearStore((state) => state.selectedYear);
   const currentSelection = useMentorMenteeStore(
     (state) => state.currentSelection
   );
@@ -70,7 +72,9 @@ export default function ProfileCard() {
         person.curr_role.toLowerCase().includes(searchTerm) ||
         person.current_company.toLowerCase().includes(searchTerm)) &&
       (selectedMajor.name === "All Majors" ||
-        person.major.toLowerCase() === selectedMajor.name.toLowerCase())
+        person.major.toLowerCase() === selectedMajor.name.toLowerCase()) &&
+      (selectedYear.name === "All Years" ||
+        person.grad_year === selectedYear.name)
   );
 
   const filetredMenteePeople = menteePeople.filter(
@@ -80,7 +84,9 @@ export default function ProfileCard() {
         person.curr_role.toLowerCase().includes(searchTerm) ||
         person.current_company.toLowerCase().includes(searchTerm)) &&
       (selectedMajor.name === "All Majors" ||
-        person.major.toLowerCase() === selectedMajor.name.toLowerCase())
+        person.major.toLowerCase() === selectedMajor.name.toLowerCase()) &&
+      (selectedYear.name === "All Years" ||
+        person.grad_year === selectedYear.name)
   );
 
   console.log(people);

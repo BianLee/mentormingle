@@ -149,6 +149,9 @@ export default function Profile() {
       console.log("user not found");
     }
   }, [user]);
+  const handleCancel = () => {
+    router.push("/browse");
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -202,7 +205,7 @@ export default function Profile() {
                     value={profile.major}
                     onChange={handleChange}
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0  sm:text-sm sm:leading-6"
-                    placeholder="2026"
+                    placeholder="Computer Science"
                   />
                 </div>
               </div>
@@ -299,7 +302,11 @@ export default function Profile() {
         </div>
       </div>
       <div className="mt-6 flex justify-center justify-end gap-x-6">
-        <button type="button" className="text-sm  leading-6 text-gray-900">
+        <button
+          type="button"
+          className="text-sm  leading-6 text-gray-900"
+          onClick={handleCancel}
+        >
           Cancel
         </button>
         <button
